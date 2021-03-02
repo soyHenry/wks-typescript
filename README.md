@@ -11,11 +11,9 @@ Para crear la estructura de proyecto se ejecuto el comando
 ```bash
   npx create-react-app wks-typescript --template typescript
 ```
-Si quieren iniciarlo desde cero pueden volver a hacerlo o directamente forkear este repositorio y partir desde allí. De elegir esta segunda opción no olviden de realizar el `npm install` para instalar las dependencias necesarias para correr el proyecto.
+Si quieren iniciarlo desde cero pueden volver a hacerlo o directamente forkear este repositorio y trabajar a partir de eso. De elegir esta segunda opción no olviden de realizar el `npm install` para instalar las dependencias necesarias para correr el proyecto.
 
 Una vez realizado esto pueden ver como si ejecutan `npm start` les va a correr una aplicación base de forma local.
-
-Vamos a borrar por completo el contenido de la carpeta src para comenzar de cero con nuestros componentes.
 
 ## WARM UP
 
