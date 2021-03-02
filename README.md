@@ -80,8 +80,6 @@ const App = ({title}: AppProps): JSX.Element => {
 
 ¿Qué ocurriría si existen propiedades opcionales que pueden pasarse o no? Más adelante veremos como solucionar este problema pero si prueban verán que tendremos un problema al momento de compilar. Si sacamos la prop title del llamado al componente tendremos el siguiente error: `Property 'title' is missing in type '{}' but required in type 'Readonly<AppProps>'.`
 
-EXPLICAR OPTIONAL PARAMETERS EN ALGUN LADO: title?: string
-
 #### State (Class vs Hooks)
 
 Si utilizamos `Hooks` el código va a quedar más sencillo ya que no vamos a tener que preocuparnos por definir la estructura de tipos que debe seguir el estado del componente, simplemente utilizamos el hook de `useState` al igual a como ya estábamos acostumbrados.
