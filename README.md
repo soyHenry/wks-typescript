@@ -26,7 +26,7 @@ Vamos a crear nustro componente principal como ya sabíamos en React, sin nada n
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-function App {
+function App() {
     return (<div>Henry Workshop - Typescript</div>);
 }
 
