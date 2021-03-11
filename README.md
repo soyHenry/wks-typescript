@@ -13,14 +13,13 @@ Para crear la estructura de proyecto se ejecuto el comando
 ```
 Si quieren iniciarlo desde cero pueden volver a hacerlo o directamente forkear este repositorio y trabajar a partir de eso. De elegir esta segunda opción no olviden de realizar el `npm install` para instalar las dependencias necesarias para correr el proyecto.
 
-Una vez realizado esto pueden ver como si ejecutan `npm start` les va a correr una aplicación base de forma local.
+Para simplificar un poco la estrucutra que genera el script de React se eliminaron los archivos innecesarios por lo que para comenzar van a tener que crear la carpeta `src` y allí ir colocando los archivos necesarios.
 
 ## WARM UP
 
-
 ### Componentes
 
-Vamos a crear nustro componente principal como ya sabíamos en React, sin nada nuevo por lo que simplemente crearemos el archivo `index.tsx` dentro de la carpeta `src` con el siguiente código:
+Una vez creada la carpeta `src` vamos a crear nustro componente principal como ya sabíamos en React, sin nada nuevo por lo que simplemente crearemos el archivo `index.tsx` (extensión tsx en vez de jsx al ser Typescript) dentro de la carpeta `src` con el siguiente código:
 
 ```javascript
 import React from 'react';
@@ -35,6 +34,8 @@ ReactDOM.render(
   document.querySelector('#root')
 );
 ```
+
+Si ejecutamos `npm start` ya tendremos nuestra aplicación corriendo de forma local.
 
 #### Props
 
@@ -59,7 +60,9 @@ Si vamos a nuestra aplicación veremos lo siguiente:
   <img src="./img-screens/1.png" />
 </p>
 
-En Typescript necesitamos informar los tipos de datos de las propiedades que va a recibir cada componente, para ello utilizaremos una `interface`. Adicionalmente es una buena práctica si utilizamos componentes funcionales determinar el tipo de dato que va a retornar dicha función y no dejarlo libre para que Typescript haga la inferencia de datos. En este caso lo que estamos retornando es un JSX por lo que agregamos `JSX.Element`.
+Como ya vimos durante la parte teórica, en Typescript necesitamos informar los tipos de datos que vamos a utilizat, en este caso de las propiedades que va a recibir cada componente, para ello utilizaremos una `interface`. Adicionalmente es una buena práctica si utilizamos componentes funcionales determinar el tipo de dato que va a retornar dicha función y no dejarlo libre para que Typescript haga la inferencia de datos. En este caso lo que estamos retornando es un JSX por lo que agregamos `JSX.Element`.
+
+*NOTA: Recuerden que este error lo está arrojando porque en el archivo tsconfig.json tenemos seteado el flag strict en true por lo que no va a permitir inferencias al tipo any en ninguna parte de nuestra aplicación pero si lo modificamos a false, va a compilar correctamente*
 
 ```javascript
 interface AppProps {
@@ -157,7 +160,7 @@ class App extends React.Component<AppProps, AppState> {
 Existe otra posibilidad para simplificar la sintaxis del código en el caso de utilizar `Class` que es la siguiente. Sin definir la interfaz del state podemos sobreescribir state dentro del componente:
 
 ```javascript
-class App extends React.Component<AppProps, AppState> {
+class App extends React.Component<AppProps> {
   state = {counter: 0};
 
   ...
@@ -166,7 +169,7 @@ class App extends React.Component<AppProps, AppState> {
 
 ## Enunciado
 
-Lo anterior fue simplemente para practicar el armado de un componente ya sea funcional o de clase pero ahora lo que vamos a intentar hacer es una aplicación utilizando también Redux que consuma una API externa (https://jsonplaceholder.typicode.com/) y muestre los resultados obtenidos. Por lo tanto los componentes que habíamos hecho hasta recién lamentablemente no van a servirnos más por lo que pueden ya eliminarlos y comenzar nuevaemente de cero.
+Lo anterior fue simplemente para practicar el armado de un componente ya sea funcional o de clase pero ahora lo que vamos a intentar hacer es una aplicación utilizando también Redux que consuma una API externa (https://jsonplaceholder.typicode.com/) y muestre los resultados obtenidos. Por lo tanto los componentes que habíamos hecho hasta recién lamentablemente no van a servirnos más por lo que pueden ya eliminarlos y comenzar nuevamente de cero.
 
 <p align="center">
   <img src="./img-screens/3.jpeg" />
@@ -184,7 +187,7 @@ En las dependencias del package.json del boilerplate ya van a estar incluidas `r
 
 Crearemos una carpeta llamada `components` para poner allí todo los componentes que vayamos a necesitar para la aplicación.
 
-Comenzaremos con el componente principal de la aplicación al que llamaremos `App`, como ya les explicamos anteriormente como crearlos no tendrán el código para esta parte... tendrán que hacerlo ustedes. La idea es que por el momento el componente simplemente retorne un `<div>` con el texto que deseen.
+Comenzaremos con el componente principal de la aplicación al que llamaremos `App` (recordar la extensión tsx), como ya les explicamos anteriormente como crearlos no tendrán el código para esta parte... tendrán que hacerlo ustedes. La idea es que por el momento el componente simplemente retorne un `<div>` con el texto que deseen.
 
 Ahora hagamos que en nustro `index.tsx` se importe dicho componente para poder utilizarlo (Recordar exportar el componente en `App.tsx` para poder hacer este paso):
 
@@ -352,6 +355,29 @@ Y ahora debemos aclarar que el método get de axios espera recibir algo con esa 
 ...
 ```
 
+Acá entra en juego lo que vimos en la clase de `Generics`, ya que axios tiene definida la función `get` de la siguiente forma:
+
+```javascript
+...
+  get<T = any, R = AxiosResponse<T>>(url: string, config?: AxiosRequestConfig): Promise<R>;
+...
+```
+
+[Link](https://github.com/axios/axios/blob/master/index.d.ts#L140) a la documentación de axios donde expone sus interfaces. Incluso podriamos ver como es la estructura completa de la respuesta buscando ese `AxiosResponse`:
+
+```javascript
+export interface AxiosResponse<T = any>  {
+  data: T;
+  status: number;
+  statusText: string;
+  headers: any;
+  config: AxiosRequestConfig;
+  request?: any;
+}
+```
+
+Allí veremos que dentro del response, y particularmente en la propiedad `data` tendremos algo que se corresponda con el tipo de dato que le indiquemos que en nuestro caso debería ser un `Post[]`. Si no lo indicabamos estaba asumiendo que podía ser cualquier cosa (`any`).
+
 Ahora crearemos una forma de tener de forma prolija todos los tipos de las actions que vamos a querer despachar. En este caso para ello crearemos un `Enum` dentro de un nuevo archivo `types.ts` en la carpeta `actions`.
 
 ```javascript
@@ -410,12 +436,12 @@ Esto nos va a asegurar que en el dispatch estemos pasando un objeto con la estru
 
 #### Reducer
 
-Volvemos a trabajar un poco más sobre nuestro reducer, pero lo que teniamos antes del `counter` ya no va a servirnos por lo que lo sacaremos y esta vez configuraremos los reducers basandonos en la idea que más adelante tendremos más por lo tanto utilizaremos el combineReducers.
+Volvemos a trabajar un poco más sobre nuestro reducer, pero lo que teníamos antes del `counter` ya no va a servirnos por lo que lo sacaremos y esta vez configuraremos los reducers basándonos en la idea que más adelante tendremos más por lo tanto utilizaremos el combineReducers.
 
 Algunos cambios que tienen que hacer:
 
   * Opcional: cambiar el import en store para que se llame `reducers` (en plural) porque utilizaremos un combineReducers ahora. Esto simplemente es para ser más representativos con los nombres que utilizamos pero si no lo cambian va a seguir funcionando correctamente: `import { reducers } from '../reducers/index';`
-  * Modificaremos el archivo de reducer momentaneamente por lo siguiente:
+  * Modificaremos el archivo de reducer momentáneamente por lo siguiente:
 
 ```javascript
 import { combineReducers } from 'redux';
@@ -425,7 +451,7 @@ export const reducers = combineReducers({
 });
   ```
 
-Ahora vamos vamos a modificarlo para adaptarlo a la aplicación de "Posts". Primero vamos a importar la interfaz de Post desde actions para ello no olviden agregarle un `export`. Por otro lado crearemos un archivo `posts.ts` en la carpeta `reducers`.
+Ahora vamos vamos a modificarlo para adaptarlo a la aplicación de "Posts". Primero vamos a un archivo `posts.ts` en la carpeta `reducers` e importar la interfaz de Post desde actions para ello no olviden agregarle un `export`.
 
 ```javascript
 import { Post, FetchPostAction } from '../actions';
@@ -476,7 +502,7 @@ __Recordatorio__: el estado de redux cuando usamos un combineReducers quedaría 
 
 ```javascript
 {
-  todos: [Todo, Todo] // Donde Todo sería un objeto del tipo Todo
+  posts: [Post, Post] // Donde Post sería un objeto del tipo Post
 }
 ```
 
