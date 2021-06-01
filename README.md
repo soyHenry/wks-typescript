@@ -783,7 +783,7 @@ export const reducers = combineReducers({
 });
 ```
 
-Ahora vamos vamos a modificarlo para adaptarlo a la aplicación de "Users". Primero vamos a un archivo `users.ts` en la carpeta `reducers` e importar la interfaz de Post desde actions para ello no olviden agregarle un `export`.
+Ahora vamos vamos a modificarlo para adaptarlo a la aplicación de "Users". Primero vamos a un archivo `users.ts` en la carpeta `reducers` e importar la interfaz de User desde actions para ello no olviden agregarle un `export`.
 
 ```javascript
 import {User, FetchUsersAction} from '../actions';
@@ -804,7 +804,7 @@ Ahora agregaremos la lógica dentro del reducer. Vamos a tener que importar tamb
 import {User, FetchUsersAction} from '../actions';
 import {ActionTypes} from '../actions/types';
 
-export const usersReducer = (state: Post[] = [], action: FetchUsersAction) => {
+export const usersReducer = (state: User[] = [], action: FetchUsersAction) => {
 	switch (action.type) {
 		case ActionTypes.fetchUsers:
 			return action.payload;
@@ -829,7 +829,7 @@ export const reducers = combineReducers({
 
 ```javascript
 {
-	users: [User, User]; // Donde Post sería un objeto del tipo Post
+	users: [User, User]; // Donde User sería un objeto del tipo User
 }
 ```
 
@@ -838,7 +838,7 @@ Podemos también validar la estructura de datos de nuestro store, nuevamente est
 ```javascript
 import {combineReducers} from 'redux';
 import {usersReducer} from './users';
-import {Post} from '../actions';
+import {User} from '../actions';
 
 export interface StoreState {
 	users: User[];
@@ -857,7 +857,7 @@ export const reducers =
 ```javascript
 import React from 'react';
 import {connect} from 'react-redux';
-import {Post, fetchUsers} from '../actions';
+import {User, fetchUsers} from '../actions';
 import {StoreState} from '../reducers';
 
 interface AppProps {
@@ -878,7 +878,7 @@ const mapStateToProps = (state: StoreState): {users: User[]} => {
 export default connect(mapStateToProps, {fetchUsers})(App);
 ```
 
-#### Mostrar algun Post
+#### Mostrar algun User
 
 En primer lugar vamos a agregar el `useEffect` que ya conocemos para despachar la acción al renderizar el componente:
 
@@ -942,15 +942,15 @@ function App(props: AppProps) {
 }
 ```
 
-Con eso ya tendríamos un listado de nuestros Posts
+Con eso ya tendríamos un listado de nuestros Users
 
 <p align="center">
   <img src="./img-screens/11.png" />
 </p>
 
-#### Eliminar algun Post
+#### Eliminar algun Users
 
-Para esta funcionalidad no habrá ningún tipo de ayuda, en función de todo lo que vimos hasta ahora deberán agregar un botón por cada Post para que al hacerle click elimine dicho post del listado total.
+Para esta funcionalidad no habrá ningún tipo de ayuda, en función de todo lo que vimos hasta ahora deberán agregar un botón por cada User para que al hacerle click elimine dicho User del listado total.
 
 <p align="center">
   <img src="./img-screens/12.jpg" />
@@ -959,9 +959,9 @@ Para esta funcionalidad no habrá ningún tipo de ayuda, en función de todo lo 
 **AYUDA**: Para cuando tengan que en el reducer aceptar más de un tipo de action pueda hacer una unión utilizando al caracter `|`. Por ejemplo:
 
 ```javascript
-export const postsReducer = (
+export const userssReducer = (
   state: User[] = [],
-  action: FetchUsersAction | DeletePostAction
+  action: FetchUsersAction | DeleteUsersAction
 ) => {
   switch (action.type) {
     ...
@@ -972,14 +972,14 @@ export const postsReducer = (
 ¿Pero que pasaría si se agregan muchos types distintos? Crecería mucho esa parte del código y quedaría poco legible. Por lo que hay una mejor forma de hacerlo, encapsularemos esa lógica dentro del archivo `types.ts` dentro de `actions`:
 
 ```javascript
-import { FetchPostAction, DeletePostAction } from './index';
+import { FetchUsersAction, DeleteusersAction } from './index';
 
 export enum ActionTypes {
-  fetchPosts,
-  deletePost
+  fetchUserss,
+  deleteUsers
 }
 
-export type Action = FetchUsersAction | DeletePostAction;
+export type Action = FetchUsersAction | DeleteUsersAction;
 ```
 
 Por lo que nuestro reducer ahora quedaría así:
