@@ -28,7 +28,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 function App() {
-	return <div>Henry Workshop - Typescript</div>;
+ return <div>Henry Workshop - Typescript</div>;
 }
 
 ReactDOM.render(<App />, document.querySelector('#root'));
@@ -42,7 +42,7 @@ Intentemos ahora pasarle como hacíamos en React una prop a ese componente por e
 
 ```javascript
 function App({title}) {
-	return <div>Henry Workshop - {title}</div>;
+ return <div>Henry Workshop - {title}</div>;
 }
 
 ReactDOM.render(<App title="Typescript" />, document.querySelector('#root'));
@@ -50,9 +50,7 @@ ReactDOM.render(<App title="Typescript" />, document.querySelector('#root'));
 
 Si vamos a nuestra aplicación veremos lo siguiente:
 
-<p align="center">
-  <img src="./img-screens/1.png" />
-</p>
+![screen1](./img-screens/1.png)
 
 Como ya vimos durante la parte teórica, en Typescript necesitamos informar los tipos de datos que vamos a utilizat, en este caso de las propiedades que va a recibir cada componente, para ello utilizaremos una `interface`. Adicionalmente es una buena práctica si utilizamos componentes funcionales determinar el tipo de dato que va a retornar dicha función y no dejarlo libre para que Typescript haga la inferencia de datos. En este caso lo que estamos retornando es un JSX por lo que agregamos `JSX.Element`.
 
@@ -81,18 +79,18 @@ Si utilizamos `Hooks` el código va a quedar más sencillo ya que no vamos a ten
 
 ```javascript
 function App({title}: AppProps) {
-	const [counter, setCounter] = useState(0);
+ const [counter, setCounter] = useState(0);
 
-	return (
-		<div>
-			<h3>Henry Workshop - {title}</h3>
-			<hr></hr>
-			<button onClick={() => setCounter(counter + 1)}>Increment</button>
-			<button onClick={() => setCounter(counter - 1)}>Decrement</button>
-			<br></br>
-			<span>{counter}</span>
-		</div>
-	);
+ return (
+  <div>
+   <h3>Henry Workshop - {title}</h3>
+   <hr></hr>
+   <button onClick={() => setCounter(counter + 1)}>Increment</button>
+   <button onClick={() => setCounter(counter - 1)}>Decrement</button>
+   <br></br>
+   <span>{counter}</span>
+  </div>
+ );
 }
 ```
 
@@ -100,39 +98,37 @@ Por el contrario si hacemos el mismo componente pero utilizando `Class` como ya 
 
 ```javascript
 class App extends React.Component<AppProps> {
-	constructor(props: AppProps) {
-		super(props);
-		this.state = {counter: 0};
-	}
+ constructor(props: AppProps) {
+  super(props);
+  this.state = {counter: 0};
+ }
 
-	onIncrement = (): void => {
-		this.setState({counter: this.state.counter + 1});
-	};
+ onIncrement = (): void => {
+  this.setState({counter: this.state.counter + 1});
+ };
 
-	onDecrement = (): void => {
-		this.setState({counter: this.state.counter - 1});
-	};
+ onDecrement = (): void => {
+  this.setState({counter: this.state.counter - 1});
+ };
 
-	render() {
-		return (
-			<div>
-				<h3>Henry Workshop - {this.props.title}</h3>
-				<hr></hr>
-				<button onClick={this.onIncrement}>Increment</button>
-				<button onClick={this.onDecrement}>Decrement</button>
-				<br></br>
-				<span>{this.state.counter}</span>
-			</div>
-		);
-	}
+ render() {
+  return (
+   <div>
+    <h3>Henry Workshop - {this.props.title}</h3>
+    <hr></hr>
+    <button onClick={this.onIncrement}>Increment</button>
+    <button onClick={this.onDecrement}>Decrement</button>
+    <br></br>
+    <span>{this.state.counter}</span>
+   </div>
+  );
+ }
 }
 ```
 
 Si analizamos el código es totalmente válido para una aplicación de React, pero al parecer Typescript no estaría muy de acuerdo con eso, ya que al intentar levantar la aplicación nos arrojará este error:
 
-<p align="center">
-  <img src="./img-screens/2.png" />
-</p>
+![screen2](/img-screens/2.png)
 
 Lo que nos está faltando para evitar este error es declarar la estructura de tipos del estado del componente de la siguiente forma:
 
@@ -165,9 +161,7 @@ class App extends React.Component<AppProps> {
 
 Lo anterior fue simplemente para practicar el armado de un componente ya sea funcional o de clase pero ahora lo que vamos a intentar hacer es una aplicación utilizando también Redux que consuma una API que vamos a crear con express y muestre los resultados obtenidos. Por lo tanto los componentes que habíamos hecho hasta recién lamentablemente no van a servirnos más por lo que pueden ya eliminarlos y comenzar nuevamente de cero.
 
-<p align="center">
-  <img src="./img-screens/3.jpeg" />
-</p>
+![screen3](./img-screens/3.jpeg)
 
 ## Back-end
 
@@ -255,15 +249,15 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const config = {
-	dbUser: process.env.DB_USER || 'postgres',
-	dbPassword: process.env.DB_PASSWORD || '1234',
-	dbHost: process.env.DB_HOST || 'localhost',
-	dbName: process.env.DB_NAME || 'workshop',
-	dbPort: process.env.DB_PORT || '5432',
-	dev: process.env.NODE_ENV !== 'production',
-	port: process.env.API_PORT || '3001',
-	host: process.env.API_host || 'localhost',
-	cors: process.env.CORS || 'localhost:3000',
+ dbUser: process.env.DB_USER || 'postgres',
+ dbPassword: process.env.DB_PASSWORD || '1234',
+ dbHost: process.env.DB_HOST || 'localhost',
+ dbName: process.env.DB_NAME || 'workshop',
+ dbPort: process.env.DB_PORT || '5432',
+ dev: process.env.NODE_ENV !== 'production',
+ port: process.env.API_PORT || '3001',
+ host: process.env.API_host || 'localhost',
+ cors: process.env.CORS || 'localhost:3000',
 };
 
 export default config;
@@ -296,20 +290,20 @@ app.use(cookieParser());
 app.use(morgan('dev'));
 
 app.use(
-	cors({
-		origin: config.cors,
-		credentials: true,
-		methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'DELETE'],
-		allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept'],
-	})
+ cors({
+  origin: config.cors,
+  credentials: true,
+  methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'DELETE'],
+  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept'],
+ })
 );
 
 app.use((err, req, res, next) => {
-	// eslint-disable-line no-unused-vars
-	const status = err.status || 500;
-	const message = err.message || err;
-	console.error(err);
-	res.status(status).send(message);
+ // eslint-disable-line no-unused-vars
+ const status = err.status || 500;
+ const message = err.message || err;
+ console.error(err);
+ res.status(status).send(message);
 });
 
 export default app;
@@ -326,15 +320,15 @@ import express, {Request, Response, NextFunction} from 'express';
 //-----------------------------------
 
 interface error {
-	status: number;
-	message: string;
+ status: number;
+ message: string;
 }
 app.use((err: error, req: Request, res: Response, next: NextFunction) => {
-	// eslint-disable-line no-unused-vars
-	const status = err.status || 500;
-	const message = err.message || err;
-	console.error(err);
-	res.status(status).send(message);
+ // eslint-disable-line no-unused-vars
+ const status = err.status || 500;
+ const message = err.message || err;
+ console.error(err);
+ res.status(status).send(message);
 });
 ```
 
@@ -342,7 +336,7 @@ Genial, ahora lo que tenemos que hacer es probar nuestra configuracion, para eso
 
 ```javascript
 app.get('/', (req: Request, res: Response) => {
-	res.send('hola typescript!');
+ res.send('hola typescript!');
 });
 ```
 
@@ -352,7 +346,7 @@ Y en nuestro archivo index.ts, el que esta en la carpeta raiz:
 import app from './src/app';
 
 app.listen(3001, function () {
-	console.log('App is listening on port 3001!');
+ console.log('App is listening on port 3001!');
 });
 ```
 
@@ -367,11 +361,11 @@ En user.ts generamos nuestras rutas!
 import {Response, Request, Router} from 'express';
 
 router.get('/', (req: Request, res: Response) => {
-	res.send('soy la ruta get!');
+ res.send('soy la ruta get!');
 });
 
 router.post('/', (req: Request, res: Response) => {
-	res.send('soy la ruta post!');
+ res.send('soy la ruta post!');
 });
 
 export default router;
@@ -430,19 +424,19 @@ Entonces, agreguemos nuestras columnas, tambien con decoradores!
 ```javascript
 @Table
 export class User extends Model<User> {
-	@Column
-	name!: string;
+ @Column
+ name!: string;
 
-	@Column
-	lastName!: string;
+ @Column
+ lastName!: string;
 
-	@CreatedAt
-	@Column
-	createdAt!: Date;
+ @CreatedAt
+ @Column
+ createdAt!: Date;
 
-	@UpdatedAt
-	@Column
-	updatedAt!: Date;
+ @UpdatedAt
+ @Column
+ updatedAt!: Date;
 }
 ```
 
@@ -456,12 +450,12 @@ import {Sequelize} from 'sequelize-typescript';
 import config from './lib/config';
 config;
 export const sequelize = new Sequelize({
-	dialect: 'postgres',
-	database: config.dbName,
-	password: config.dbPassword,
-	username: config.dbUser,
-	storage: ':memory:',
-	models: [__dirname + '/models'],
+ dialect: 'postgres',
+ database: config.dbName,
+ password: config.dbPassword,
+ username: config.dbUser,
+ storage: ':memory:',
+ models: [__dirname + '/models'],
 });
 ```
 
@@ -474,34 +468,34 @@ Volvemos a nuestro index.ts de la carpeta raiz y generamos nuestra conexion.
 import {sequelize} from './src/db';
 import app from './src/app';
 sequelize
-	.sync({force: true, logging: false})
-	.then(() => {
-		console.log('base de datos conectada! :D');
-		app.listen(3001, function () {
-			console.log('App is listening on port 3001!');
-		});
-	})
-	.catch((err) => console.error(err));
+ .sync({force: true, logging: false})
+ .then(() => {
+  console.log('base de datos conectada! :D');
+  app.listen(3001, function () {
+   console.log('App is listening on port 3001!');
+  });
+ })
+ .catch((err) => console.error(err));
 ```
 
 Entonces, lo unico que nos falta seria agregar a nuestras rutas la conexion con nuestros modelos! Lo hacemos de forma muy parecido a como lo hacemos con javascript normal!
 
 ```javascript
 router.get('/', (req: Request, res: Response, next: NextFunction) => {
-	User.findAll()
-		.then((users) => {
-			res.send(users);
-		})
-		.catch((error) => next(error));
+ User.findAll()
+  .then((users) => {
+   res.send(users);
+  })
+  .catch((error) => next(error));
 });
 
 router.post('/', (req: Request, res: Response, next: NextFunction) => {
-	const user = req.body;
-	User.create(user)
-		.then((createdUser) => {
-			res.send(createdUser);
-		})
-		.catch((error) => next(error));
+ const user = req.body;
+ User.create(user)
+  .then((createdUser) => {
+   res.send(createdUser);
+  })
+  .catch((error) => next(error));
 });
 ```
 
@@ -544,37 +538,35 @@ Si lo hacemos como ya sabíamos de React:
 
 ```javascript
 const initialState = {
-	counter: 1,
+ counter: 1,
 };
 
 export default function reducer(state = initialState, action) {
-	return state;
+ return state;
 }
 ```
 
 Nos va a arrojar el siguiente error:
 
-<p align="center">
-  <img src="./img-screens/2.png" />
-</p>
+![screen2](./img-screens/2.png)
 
 Nuevamente debido al chequeo de tipos que realiza Typescript vamos a tener que hacer algunos ajustes a nuestro reducer. Debemos definir las interfaces para nuestro estado y para nuestras actions. Podemos hacerlo directaente en ese mismo archivo del reducer.
 
 ```javascript
 interface stateI {
-	counter: number;
+ counter: number;
 }
 
 const initialState: stateI = {
-	counter: 1,
+ counter: 1,
 };
 
 interface actionI {
-	type: string;
+ type: string;
 }
 
 export default function reducer(state: stateI = initialState, action: actionI) {
-	return state;
+ return state;
 }
 ```
 
@@ -590,18 +582,16 @@ import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 
 ReactDOM.render(
-	<Provider store={store}>
-		<h1>Henry</h1>
-	</Provider>,
-	document.querySelector('#root')
+ <Provider store={store}>
+  <h1>Henry</h1>
+ </Provider>,
+ document.querySelector('#root')
 );
 ```
 
 ¿Todo OK? Nop, Typescript otra vez...
 
-<p align="center">
-  <img src="./img-screens/4.png" />
-</p>
+![screen4](./img-screens/4.png)
 
 Para que el módulo de `react-redux` funcione correctamente con Typescript debemos adicionalmente instalar un módulo separado en donde están definido los tipos de datos. Si observamos en el mensaje de error incluso nos dice como hacerlo.
 
@@ -621,23 +611,19 @@ import axios from 'axios';
 const url = 'https://localhost:3001/user';
 
 export const fetchUsers = () => {
-	return async (dispatch) => {
-		const response = await axios.get(url);
-		dispatch({
-			type: 'FETCH_USERS',
-			payload: response.data,
-		});
-	};
+ return async (dispatch) => {
+  const response = await axios.get(url);
+  dispatch({
+   type: 'FETCH_USERS',
+   payload: response.data,
+  });
+ };
 };
 ```
 
-<p align="center">
-  <img src="./img-screens/6.png" />
-</p>
+![screen6](./img-screens/6.png)
 
-<p align="center">
-  <img src="./img-screens/7.jpeg" />
-</p>
+![screen7](./img-screens/7.jpeg)
 
 A no desesperar, nuevamente lo que está ocurriendo es que debemos indicarle la estructura de datos al dispatch pero ahora ¿cómo hacemos si no conocemos exactamente como está implementada por dentro?
 
@@ -659,9 +645,7 @@ De antemano no podemos saberlo por lo que va a ser del tipo `any`. Por otro lado
 
 Vamos a mejorar un poco esto definiendo la estructura que debería tener la respuesta al GET. Para eso veamos que nos está devolviendo dicho endpoint:
 
-<p align="center">
-  <img src="./img-screens/8.png" />
-</p>
+![screen8](./img-screens/8.png)
 
 Como pueden observar en la imagen deberíamos tener:
 
@@ -673,9 +657,9 @@ Por lo tanto crearemos una interfaz con esa estructura (Omitiremos el `userId` y
 
 ```javascript
 interface User {
-	id: number;
-	name: string;
-	lastName: string;
+ id: number;
+ name: string;
+ lastName: string;
 }
 ```
 
@@ -699,12 +683,12 @@ Acá entra en juego lo que vimos en la clase de `Generics`, ya que axios tiene d
 
 ```javascript
 export interface AxiosResponse<T = any> {
-	data: T;
-	status: number;
-	statusText: string;
-	headers: any;
-	config: AxiosRequestConfig;
-	request?: any;
+ data: T;
+ status: number;
+ statusText: string;
+ headers: any;
+ config: AxiosRequestConfig;
+ request?: any;
 }
 ```
 
@@ -779,7 +763,7 @@ Algunos cambios que tienen que hacer:
 import {combineReducers} from 'redux';
 
 export const reducers = combineReducers({
-	counter: () => 1,
+ counter: () => 1,
 });
 ```
 
@@ -789,8 +773,8 @@ Ahora vamos vamos a modificarlo para adaptarlo a la aplicación de "Users". Prim
 import {User, FetchUsersAction} from '../actions';
 
 export const usersReducer = (
-	state: User[] = [],
-	action: FetchUsersAction
+ state: User[] = [],
+ action: FetchUsersAction
 ) => {};
 ```
 
@@ -805,12 +789,12 @@ import {User, FetchUsersAction} from '../actions';
 import {ActionTypes} from '../actions/types';
 
 export const usersReducer = (state: User[] = [], action: FetchUsersAction) => {
-	switch (action.type) {
-		case ActionTypes.fetchUsers:
-			return action.payload;
-		default:
-			return state;
-	}
+ switch (action.type) {
+  case ActionTypes.fetchUsers:
+   return action.payload;
+  default:
+   return state;
+ }
 };
 ```
 
@@ -821,7 +805,7 @@ import {combineReducers} from 'redux';
 import {usersReducer} from './users';
 
 export const reducers = combineReducers({
-	users: usersReducer,
+ users: usersReducer,
 });
 ```
 
@@ -829,7 +813,7 @@ export const reducers = combineReducers({
 
 ```javascript
 {
-	users: [User, User]; // Donde User sería un objeto del tipo User
+ users: [User, User]; // Donde User sería un objeto del tipo User
 }
 ```
 
@@ -841,15 +825,15 @@ import {usersReducer} from './users';
 import {User} from '../actions';
 
 export interface StoreState {
-	users: User[];
+ users: User[];
 }
 
 export const reducers =
-	combineReducers <
-	StoreState >
-	{
-		users: usersReducer,
-	};
+ combineReducers <
+ StoreState >
+ {
+  users: usersReducer,
+ };
 ```
 
 #### Conectar componente App con Redux
@@ -861,18 +845,18 @@ import {User, fetchUsers} from '../actions';
 import {StoreState} from '../reducers';
 
 interface AppProps {
-	users: User[];
-	fetchUsers(): any;
+ users: User[];
+ fetchUsers(): any;
 }
 
 function App(props: AppProps) {
-	return <div>Hello Henrys</div>;
+ return <div>Hello Henrys</div>;
 }
 
 const mapStateToProps = (state: StoreState): {users: User[]} => {
-	return {
-		users: state.users,
-	};
+ return {
+  users: state.users,
+ };
 };
 
 export default connect(mapStateToProps, {fetchUsers})(App);
@@ -884,15 +868,13 @@ En primer lugar vamos a agregar el `useEffect` que ya conocemos para despachar l
 
 ```javascript
 useEffect(() => {
-	props.fetchUsers();
+ props.fetchUsers();
 }, []);
 ```
 
 Si observamos las request enviadas al abrir nuestra aplicación veremos que efectivamente el request para solicitar los USERS a la API están funcionando:
 
-<p align="center">
-  <img src="./img-screens/9.png" />
-</p>
+![screen9](./img-screens/9.png)
 
 **OPCIONAL**: Vamos a configurar redux devtools para poder ver y debuggear nuestra aplicación.
 
@@ -917,9 +899,7 @@ const store = createStore(
 export default store;
 ```
 
-<p align="center">
-  <img src="./img-screens/10.png" />
-</p>
+![screen10](./img-screens/10.png)
 
 Recuerden que el nombre de la acción figura como un 0 debido a que utilizamos un Enum con sus valores por defecto, si ustedes le asignaron un String van a ver dicho nombre allí.
 
@@ -927,34 +907,30 @@ Ahora que sabemos que funciona hagamoslo de la forma correcta, a partir de un bo
 
 ```javascript
 function App(props: AppProps) {
-	return (
-		<div>
-			<button onClick={props.fetchUsers}>FETCH USERS!</button>
-			{props.users.map((user: User) => {
-				return (
-					<div key={user.id}>
-						{user.id}) {user.name}
-					</div>
-				);
-			})}
-		</div>
-	);
+ return (
+  <div>
+   <button onClick={props.fetchUsers}>FETCH USERS!</button>
+   {props.users.map((user: User) => {
+    return (
+     <div key={user.id}>
+      {user.id}) {user.name}
+     </div>
+    );
+   })}
+  </div>
+ );
 }
 ```
 
 Con eso ya tendríamos un listado de nuestros Users
 
-<p align="center">
-  <img src="./img-screens/11.png" />
-</p>
+![screen11](./img-screens/11.png)
 
 #### Eliminar algun Users
 
 Para esta funcionalidad no habrá ningún tipo de ayuda, en función de todo lo que vimos hasta ahora deberán agregar un botón por cada User para que al hacerle click elimine dicho User del listado total.
 
-<p align="center">
-  <img src="./img-screens/12.jpg" />
-</p>
+![screen12](./img-screens/12.jpg)
 
 **AYUDA**: Para cuando tengan que en el reducer aceptar más de un tipo de action pueda hacer una unión utilizando al caracter `|`. Por ejemplo:
 
@@ -1004,6 +980,4 @@ Adicionalmente para mejorar un poco la UX de nuestra paǵina sería bueno tener 
 
 Implementar dicha funcionalidad con lo visto hasta el momento.
 
-<p align="center">
-  <img src="./img-screens/13.jpg" />
-</p>
+![screen13](./img-screens/13.jpg)
