@@ -4,7 +4,7 @@ class Persona {
     protected email: string
     constructor(nombre: string, edad: number, email: string) {
         this.nombre = nombre;
-        this.edad = edadW
+        this.edad = edad
         this.email = email
     }
     getEdad () {
